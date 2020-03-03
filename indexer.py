@@ -37,16 +37,16 @@ class Indexer:
                     if proximity > PROXIMITY_THRESH:
 
                         self.motor.set(1)
-    
+
                         while proximity > PROXIMITY_THRESH and not self.running:
-                        
+
                             yield
-                        
-                        for _ in range(10):
+
+                        for _ in range(5):
                             if self.running:
                                 break
                             yield
-                            
+
                         self.motor.set(0)
 
             yield
