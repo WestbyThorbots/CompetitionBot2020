@@ -28,17 +28,26 @@ class Indexer:
 
                 proximity = self.sensor.getProximity()
                 
+
                 if proximity > PROXIMITY_THRESH:
 
-                    print("ball detected")
-                    self.encoder.setPosition(0)
-
-                    while self.encoder.getPosition() < ROTATIONS_PER_BALL:
-
-                        self.start()
+                    for _ in range(12):
+                        yield
                     
-                    self.stop()
-                    print("rotation complete")
+                    if proximity > PROXIMITY_THRESH:
+
+                        self.motor.set(1)
+    
+                        while proximity > PROXIMITY_THRESH and not self.running:
+                        
+                            yield
+                        
+                        for _ in range(10):
+                            if self.running:
+                                break
+                            yield
+                            
+                        self.motor.set(0)
 
             yield
 
